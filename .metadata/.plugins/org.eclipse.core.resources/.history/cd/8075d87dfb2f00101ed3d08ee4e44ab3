@@ -1,0 +1,14 @@
+spring.application.name=authentification-service 
+# Port de l'application
+server.port=8089
+
+# Base de données H2
+spring.datasource.url=jdbc:h2:mem:users-db
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=update
+spring.h2.console.enabled=true
+
+# H2 console disponible à http://localhost:8089/h2-console

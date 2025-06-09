@@ -1,0 +1,64 @@
+package org.ms.clientservice.web;
+
+import lombok.RequiredArgsConstructor;
+import org.ms.clientservice.entities.Client;
+import org.ms.clientservice.repository.ClientRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping("/api/clients")
+@RequiredArgsConstructor
+public class ClientRestController {
+
+    private final ClientRepository clientRepository;
+
+    // Get all clients
+    @GetMapping
+    public List<Client> getAllClients() {
+        return clientRepository.findAll();
+    }
+
+    // Get client by ID
+    @GetMapping("/{id}")
+    public Client getClientById(@PathVariable Long id) {
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found with id " + id));
+    }
+
+    // Search clients by name with pagination
+    @GetMapping("/search")
+    public Page<Client> searchClientsByName(
+            @RequestParam(name = "name", defaultValue = "") String name,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size
+    ) {
+        return clientRepository.findByNameContains(name, PageRequest.of(page, size));
+    }
+
+    // Add new client
+    @PostMapping
+    public Client saveClient(@RequestBody Client client) {
+        return clientRepository.save(client);
+    }
+
+    // Update client
+    @PutMapping("/{id}")
+    public Client updateClient(@PathVariable Long id, @RequestBody Client client) {
+        Client existingClient = clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found with id " + id));
+        existingClient.setName(client.getName());
+        existingClient.setEmail(client.getEmail());
+        return clientRepository.save(existingClient);
+    }
+
+    // Delete client
+    @DeleteMapping("/{id}")
+    public void deleteClient(@PathVariable Long id) {
+        clientRepository.deleteById(id);
+    }
+}

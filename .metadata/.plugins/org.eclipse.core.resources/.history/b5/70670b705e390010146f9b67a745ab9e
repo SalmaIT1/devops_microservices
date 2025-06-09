@@ -1,0 +1,4 @@
+spring.application.name=authentification-service 
+spring.cloud.config.uri=http://localhost:5555
+management.endpoints.web.exposure.include=*
+

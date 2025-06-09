@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item key="hasShownOverlayPopupBefore" value="true"/>
+	<section name="java.lang.Class">
+		<item key="replaceBarOpen" value="true"/>
+		<list key="findhistory">
+			<item value="Cors"/>
+			<item value="PreAuthorize"/>
+			<item value="authenticationManager"/>
+			<item value="pass"/>
+			<item value="addFilter"/>
+			<item value="login"/>
+			<item value="netflix"/>
+			<item value="appUser"/>
+			<item value="AppUser"/>
+			<item value="http"/>
+			<item value="&lt;dependency&gt;"/>
+			<item value="cloud"/>
+			<item value="type"/>
+			<item value="lu"/>
+			<item value="lue"/>
+		</list>
+		<list key="replacehistory">
+			<item value="PostAuthorize"/>
+			<item value="lue"/>
+			<item value="date_creation"/>
+		</list>
+	</section>
+</section>

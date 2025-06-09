@@ -1,0 +1,7 @@
+INDEX VERSION 1.134
+C:\Users\Salma\Dev\Micro-services\Workspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1785053446.index
+\webProjet\src\main\java
+C:\Users\Salma\Dev\Micro-services\Workspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2652466170.index
+\jax-rs-client-jsp\src\main\resources
+C:\Users\Salma\Dev\Micro-services\Workspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3581212298.index
+\webProjet\src\main\java

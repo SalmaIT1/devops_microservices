@@ -1,0 +1,80 @@
+package org.ms.authentificationservice.securite;
+
+import org.ms.authentificationservice.entities.AppUser;
+import org.ms.authentificationservice.filtres.JwtAuthenticationFilter;
+import org.ms.authentificationservice.filtres.JwtAuthorizationFilter;
+import org.ms.authentificationservice.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
+public class SecurityConfig {
+
+	private final UserService userService;
+
+	public SecurityConfig(UserService userService) {
+		this.userService = userService;
+	}
+
+	@Autowired
+	public void globalConfig(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(username -> {
+			AppUser appUser = userService.getUserByName(username);
+			if (appUser == null) throw new UsernameNotFoundException("User not found");
+			Collection<GrantedAuthority> permissions = new ArrayList<>();
+			appUser.getRoles().forEach(r -> permissions.add(new SimpleGrantedAuthority(r.getRoleName())));
+			return new User(appUser.getUsername(), appUser.getPassword(), permissions);
+		});
+	}
+
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationConfiguration authConfig) throws Exception {
+		AuthenticationManager authManager = authConfig.getAuthenticationManager();
+
+		// Only ONE JwtAuthenticationFilter instance
+		JwtAuthenticationFilter jwtAuthFilter = new JwtAuthenticationFilter(authManager);
+		jwtAuthFilter.setFilterProcessesUrl("/login");
+
+		http.csrf().disable();
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		http.headers().frameOptions().disable();
+
+		// Allow login and H2
+		http.authorizeRequests()
+			.requestMatchers("/login**", "/h2-console/**", "/users/refreshToken/**").permitAll()
+			.anyRequest().authenticated();
+
+		// Add JWT filters
+		http.addFilter(jwtAuthFilter);
+		http.addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+		return http.build();
+	}
+
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+		return authConfig.getAuthenticationManager();
+	}
+}

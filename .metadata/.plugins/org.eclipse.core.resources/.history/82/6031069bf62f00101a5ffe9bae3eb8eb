@@ -1,0 +1,5 @@
+package org.ms.authentificationservice.repositories;
+
+public class AppUserRepository {
+
+}

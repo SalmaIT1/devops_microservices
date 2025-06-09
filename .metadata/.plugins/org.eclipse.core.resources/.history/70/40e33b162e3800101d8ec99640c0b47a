@@ -1,0 +1,5 @@
+package org.ms.reglementservice.web;
+
+public class ReglementRestController {
+
+}

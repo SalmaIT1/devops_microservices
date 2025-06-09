@@ -1,0 +1,31 @@
+package org.ms.clientservice;
+
+import org.ms.clientservice.entities.Client;
+import org.ms.clientservice.repository.ClientRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+
+@EnableMethodSecurity  // Enable method-level security annotations like @PreAuthorize
+@SpringBootApplication
+public class ClientServiceApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ClientServiceApplication.class, args);
+    }
+
+    @Bean
+    CommandLineRunner start(ClientRepository clientRepository,
+                            RepositoryRestConfiguration repositoryRestConfiguration) {
+
+        // Expose IDs in JSON responses
+        repositoryRestConfiguration.exposeIdsFor(Client.class);
+
+        return args -> {
+            // No static data inserted, just a startup message
+            System.out.println("Client service started. No static data inserted.");
+        };
+    }
+}

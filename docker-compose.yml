@@ -1,0 +1,212 @@
+services:
+  auth-service:
+    build: ./authentification-service
+    ports:
+      - "8089:8089"
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      config-server:
+        condition: service_started
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/projet_microservices
+      SPRING_DATASOURCE_USERNAME: salma
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+    command: ["java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka"]
+    networks:
+      - backend
+    restart: on-failure
+
+  client-service:
+    build: ./client-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      config-server:
+        condition: service_started
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/projet_microservices
+      SPRING_DATASOURCE_USERNAME: salma
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+    command: ["java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka"]
+    networks:
+      - backend
+    restart: on-failure
+
+  produit-service:
+    build: ./produit-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      config-server:
+        condition: service_started
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/projet_microservices
+      SPRING_DATASOURCE_USERNAME: salma
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+    command: ["java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka"]
+    networks:
+      - backend
+    restart: on-failure
+
+  facture-service:
+    build: ./factureservice
+    ports:
+      - "8083:8083"
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      config-server:
+        condition: service_started
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/projet_microservices
+      SPRING_DATASOURCE_USERNAME: salma
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+    command: ["java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka"]
+    networks:
+      - backend
+    restart: on-failure
+
+  reglement-service:
+    build: ./reglement-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      config-server:
+        condition: service_started
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/projet_microservices
+      SPRING_DATASOURCE_USERNAME: salma
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+    command: ["java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka"]
+    networks:
+      - backend
+    restart: on-failure
+
+  eureka-server:
+    build: ./eureka-discoveryservice
+    ports:
+      - "8761:8761"
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  config-server:
+    build: ./config-service
+    ports:
+      - "5555:5555"
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5555/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  gateway-service:
+    build: ./gatewayservice
+    ports:
+      - "8888:8888"
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      config-server:
+        condition: service_started
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/projet_microservices
+      SPRING_DATASOURCE_USERNAME: salma
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+    networks:
+      - backend
+    restart: on-failure
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    command: --default-authentication-plugin=mysql_native_password --wait_timeout=28800
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: projet_microservices
+      MYSQL_USER: salma
+      MYSQL_PASSWORD: root
+      MYSQL_INITDB_SKIP_TZINFO: 1
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -uroot -proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql-db
+      PMA_USER: root
+      PMA_PASSWORD: root
+      PMA_ARBITRARY: 1
+      UPLOAD_LIMIT: 128M
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  mysql_data:

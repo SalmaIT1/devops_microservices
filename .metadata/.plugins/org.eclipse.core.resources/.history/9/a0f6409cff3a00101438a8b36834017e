@@ -1,0 +1,70 @@
+package org.ms.clientservice.web;
+
+import lombok.RequiredArgsConstructor;
+import org.ms.clientservice.entities.Client;
+import org.ms.clientservice.repository.ClientRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import org.springframework.security.access.prepost.PostAuthorize;
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+@RequestMapping("/clients")
+@RequiredArgsConstructor
+public class ClientRestController {
+    private final ClientRepository clientRepository;
+
+    // GET all clients - accessible by USER and ADMIN
+    @GetMapping
+    @PostAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public List<Client> getAllClients() {
+        return clientRepository.findAll();
+    }
+
+    // GET client by ID - accessible by USER and ADMIN
+    @GetMapping("/{id}")
+    @PostAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public Client getClientById(@PathVariable Long id) {
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found with id " + id));
+    }
+
+    // GET clients by name with pagination - accessible by USER and ADMIN
+    @GetMapping("/search")
+    @PostAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public Page<Client> searchClientsByName(
+            @RequestParam(name = "name", defaultValue = "") String name,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size
+    ) {
+        return clientRepository.findByNameContains(name, PageRequest.of(page, size));
+    }
+
+    // POST - only ADMIN can add
+    @PostMapping
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public Client saveClient(@RequestBody Client client) {
+        return clientRepository.save(client);
+    }
+
+    // PUT - only ADMIN can update
+    @PutMapping("/{id}")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public Client updateClient(@PathVariable Long id, @RequestBody Client client) {
+        Client existingClient = clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found with id " + id));
+        existingClient.setName(client.getName());
+        existingClient.setEmail(client.getEmail());
+        return clientRepository.save(existingClient);
+    }
+
+    // DELETE - only ADMIN can delete
+    @DeleteMapping("/{id}")
+    @PostAuthorize("hasAuthority('ADMIN')")
+    public void deleteClient(@PathVariable Long id) {
+        clientRepository.deleteById(id);
+    }
+}

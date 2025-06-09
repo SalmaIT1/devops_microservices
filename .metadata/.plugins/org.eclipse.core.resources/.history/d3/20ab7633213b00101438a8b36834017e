@@ -1,0 +1,57 @@
+@RestController
+@RequestMapping("/clients")
+@RequiredArgsConstructor
+public class ClientRestController {
+    private final ClientRepository clientRepository;
+
+    // GET all clients - USER or ADMIN
+    @GetMapping
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public List<Client> getAllClients() {
+        return clientRepository.findAll();
+    }
+
+    // GET client by ID - USER or ADMIN
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public Client getClientById(@PathVariable Long id) {
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found with id " + id));
+    }
+
+    // Search clients - USER or ADMIN
+    @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public Page<Client> searchClientsByName(
+            @RequestParam(name = "name", defaultValue = "") String name,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "5") int size
+    ) {
+        return clientRepository.findByNameContains(name, PageRequest.of(page, size));
+    }
+
+    // POST - ADMIN only
+    @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public Client saveClient(@RequestBody Client client) {
+        return clientRepository.save(client);
+    }
+
+    // PUT - ADMIN only
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Client updateClient(@PathVariable Long id, @RequestBody Client client) {
+        Client existingClient = clientRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client not found with id " + id));
+        existingClient.setName(client.getName());
+        existingClient.setEmail(client.getEmail());
+        return clientRepository.save(existingClient);
+    }
+
+    // DELETE - ADMIN only
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteClient(@PathVariable Long id) {
+        clientRepository.deleteById(id);
+    }
+}

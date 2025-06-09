@@ -1,0 +1,16 @@
+127.0.0.1 - - [30/Mar/2025:05:09:08 +0100] "GET / HTTP/1.1" 404 674
+0:0:0:0:0:0:0:1 - - [30/Mar/2025:05:11:35 +0100] "GET /formProduit.jsp HTTP/1.1" 404 678
+0:0:0:0:0:0:0:1 - - [30/Mar/2025:05:13:01 +0100] "GET /formProduit.jsp HTTP/1.1" 404 678
+0:0:0:0:0:0:0:1 - - [30/Mar/2025:05:13:04 +0100] "GET /formProduit.jsp HTTP/1.1" 404 678
+0:0:0:0:0:0:0:1 - - [30/Mar/2025:05:13:05 +0100] "GET /formProduit.jsp HTTP/1.1" 404 678
+0:0:0:0:0:0:0:1 - - [30/Mar/2025:05:20:27 +0100] "GET /formProduit.jsp HTTP/1.1" 404 678
+0:0:0:0:0:0:0:1 - - [30/Mar/2025:05:32:50 +0100] "GET /formProduit.jsp HTTP/1.1" 404 678
+0:0:0:0:0:0:0:1 - - [30/Mar/2025:05:32:52 +0100] "GET /formProduit.jsp HTTP/1.1" 404 678
+0:0:0:0:0:0:0:1 - - [30/Mar/2025:05:35:14 +0100] "GET /formProduit.jsp HTTP/1.1" 404 678
+0:0:0:0:0:0:0:1 - - [30/Mar/2025:05:35:17 +0100] "GET /formProduit.jsp HTTP/1.1" 404 678
+127.0.0.1 - - [30/Mar/2025:05:59:59 +0100] "GET / HTTP/1.1" 404 674
+0:0:0:0:0:0:0:1 - - [30/Mar/2025:06:00:02 +0100] "GET /jax-rs-client-jsp/formProduit.jsp HTTP/1.1" 500 2839
+0:0:0:0:0:0:0:1 - - [30/Mar/2025:06:00:59 +0100] "GET /jax-rs-client-jsp/listProduits.jsp HTTP/1.1" 500 3737
+127.0.0.1 - - [30/Mar/2025:06:04:05 +0100] "GET / HTTP/1.1" 404 674
+0:0:0:0:0:0:0:1 - - [30/Mar/2025:06:05:52 +0100] "GET /jax-rs-client-jsp/index.jsp HTTP/1.1" 200 57
+0:0:0:0:0:0:0:1 - - [30/Mar/2025:06:06:04 +0100] "GET /jax-rs-client-jsp/formProduit.jsp HTTP/1.1" 500 2839

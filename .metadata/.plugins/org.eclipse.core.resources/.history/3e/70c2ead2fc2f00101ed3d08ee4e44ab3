@@ -1,0 +1,44 @@
+package org.ms.authentificationservice;
+
+import org.ms.authentificationservice.entities.AppRole;
+import org.ms.authentificationservice.entities.AppUser;
+import org.ms.authentificationservice.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class AuthentificationServiceApplication implements CommandLineRunner {
+
+    @Autowired
+    private UserService userService;
+
+    public static void main(String[] args) {
+        SpringApplication.run(AuthentificationServiceApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        AppRole userRole = new AppRole();
+        userRole.setRoleName("USER");
+        userService.addRole(userRole);
+
+        AppRole adminRole = new AppRole();
+        adminRole.setRoleName("ADMIN");
+        userService.addRole(adminRole);
+
+        AppUser user1 = new AppUser();
+        user1.setUsername("user1");
+        user1.setPassword("123");
+        userService.addUser(user1);
+        userService.addRoleToUser("user1", "USER");
+
+        AppUser user2 = new AppUser();
+        user2.setUsername("user2");
+        user2.setPassword("456");
+        userService.addUser(user2);
+        userService.addRoleToUser("user2", "USER");
+        userService.addRoleToUser("user2", "ADMIN");
+    }
+}

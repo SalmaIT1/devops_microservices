@@ -1,0 +1,33 @@
+package org.ms.clientservice;
+
+import org.ms.clientservice.entities.Client;
+import org.ms.clientservice.repository.ClientRepository;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+
+@SpringBootApplication
+@EnableMethodSecurity (prePostEnabled = true, securedEnabled = true)
+
+public class ClientServiceApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ClientServiceApplication.class, args);
+    }
+
+    @Bean
+    CommandLineRunner start(ClientRepository clientRepository,
+                            RepositoryRestConfiguration repositoryRestConfiguration) {
+
+        // Exposer les IDs dans les réponses JSON
+        repositoryRestConfiguration.exposeIdsFor(Client.class);
+
+        return args -> {
+            // Ne rien insérer, juste exposer les IDs
+            System.out.println("Client service started. No static data inserted.");
+        };
+    }
+}

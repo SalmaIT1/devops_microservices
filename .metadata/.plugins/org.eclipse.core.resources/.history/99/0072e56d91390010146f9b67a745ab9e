@@ -1,0 +1,63 @@
+package org.ms.factureservice.web;
+
+import lombok.RequiredArgsConstructor;
+import org.ms.factureservice.entities.FactureLigne;
+import org.ms.factureservice.feign.ProduitServiceClient;
+import org.ms.factureservice.model.Produit;
+import org.ms.factureservice.repository.FactureLigneRepository;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/factureLignes")
+@RequiredArgsConstructor
+public class FactureLigneRestController {
+
+    private final FactureLigneRepository factureLigneRepository;
+    private final ProduitServiceClient produitServiceClient;
+
+    // Get all facture lignes
+    @GetMapping
+    public List<FactureLigne> getAllFactureLignes() {
+        List<FactureLigne> lignes = factureLigneRepository.findAll();
+        lignes.forEach(ligne -> {
+            Produit produit = produitServiceClient.findProductById(ligne.getProduitID());
+            ligne.setProduit(produit);
+        });
+        return lignes;
+    }
+
+    // Get facture ligne by ID
+    @GetMapping("/{id}")
+    public FactureLigne getFactureLigneById(@PathVariable Long id) {
+        FactureLigne ligne = factureLigneRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("FactureLigne not found with id " + id));
+        Produit produit = produitServiceClient.findProductById(ligne.getProduitID());
+        ligne.setProduit(produit);
+        return ligne;
+    }
+
+    // Create facture ligne
+    @PostMapping
+    public FactureLigne createFactureLigne(@RequestBody FactureLigne ligne) {
+        return factureLigneRepository.save(ligne);
+    }
+
+    // Update facture ligne
+    @PutMapping("/{id}")
+    public FactureLigne updateFactureLigne(@PathVariable Long id, @RequestBody FactureLigne ligneRequest) {
+        FactureLigne ligne = factureLigneRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("FactureLigne not found with id " + id));
+        ligne.setProduitID(ligneRequest.getProduitID());
+        ligne.setQuantity(ligneRequest.getQuantity());
+        ligne.setPrice(ligneRequest.getPrice());
+        return factureLigneRepository.save(ligne);
+    }
+
+    // Delete facture ligne
+    @DeleteMapping("/{id}")
+    public void deleteFactureLigne(@PathVariable Long id) {
+        factureLigneRepository.deleteById(id);
+    }
+}

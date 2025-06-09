@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="ExternalProjectImportWizard">
+		<item key="WizardProjectsImportPage.STORE_NESTED_PROJECTS" value="false"/>
+		<item key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID" value="false"/>
+		<item key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED" value="false"/>
+		<item key="WizardProjectsImportPage.STORE_CLOSE_CREATED_PROJECTS_ID" value="false"/>
+		<item key="WizardProjectsImportPage.STORE_HIDE_CONFLICTING_PROJECTS_ID" value="false"/>
+		<list key="WizardProjectsImportPage.STORE_DIRECTORIES">
+			<item value="C:\Users\Salma\Dev\Micro-services\Workspace"/>
+		</list>
+		<list key="WizardProjectsImportPage.STORE_ARCHIVES">
+			<item value=""/>
+		</list>
+		<section name="ExternalProjectImportWizard.dialogBounds">
+			<item key="DIALOG_X_ORIGIN" value="181"/>
+			<item key="DIALOG_Y_ORIGIN" value="165"/>
+			<item key="DIALOG_WIDTH" value="613"/>
+			<item key="DIALOG_HEIGHT" value="766"/>
+			<item key="DIALOG_FONT_NAME" value="1|Segoe UI|8.830189|0|WINDOWS|1|-13|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+		</section>
+	</section>
+	<section name="CleanDialogSettings">
+		<item key="TOGGLE_SELECTED" value="true"/>
+		<item key="DIALOG_WIDTH" value="579"/>
+		<item key="DIALOG_HEIGHT" value="406"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|8.830189|0|WINDOWS|1|-13|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+	<section name="NewWizardAction">
+		<section name="NewWizard.dialogBounds">
+			<item key="DIALOG_X_ORIGIN" value="0"/>
+			<item key="DIALOG_Y_ORIGIN" value="0"/>
+			<item key="DIALOG_WIDTH" value="613"/>
+			<item key="DIALOG_HEIGHT" value="500"/>
+			<item key="DIALOG_FONT_NAME" value="1|Segoe UI|8.830189|0|WINDOWS|1|-13|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+		</section>
+	</section>
+	<section name="SmartImportWizard">
+		<item key="SmartImportRootWizardPage.STORE_HIDE_ALREADY_OPEN" value="false"/>
+		<item key="SmartImportRootWizardPage.STORE_CLOSE_IMPORTED" value="false"/>
+		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
+		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
+		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\Users\Salma\Dev\Micro-services\Workspace\reglement-service"/>
+			<item value="C:\Users\Salma\Dev\Micro-services\Workspace\authentification-service"/>
+			<item value="C:\Users\Salma\Dev\Micro-services\Workspace\config-service"/>
+			<item value="C:\Users\Salma\Dev\Micro-services\Workspace\factureservice"/>
+			<item value="C:\Users\Salma\Dev\Micro-services\Workspace\eureka-discoveryservice"/>
+			<item value="C:\Users\Salma\Dev\Micro-services\Workspace\gatewayservice"/>
+			<item value="C:\Users\Salma\Dev\Micro-services\Workspace\produit-service"/>
+			<item value="C:\Users\Salma\Dev\Micro-services\Workspace\client-service"/>
+			<item value="C:\Users\Salma\Downloads\GestionAbsences (2)"/>
+			<item value="C:\Users\Salma\Desktop\GestionAbsences"/>
+			<item value="C:\Users\Salma\Downloads\_jpa-spring-boot\jpa-spring-boot"/>
+		</list>
+		<section name="SmartImportWizard.dialogBounds">
+			<item key="DIALOG_X_ORIGIN" value="60"/>
+			<item key="DIALOG_Y_ORIGIN" value="79"/>
+			<item key="DIALOG_WIDTH" value="907"/>
+			<item key="DIALOG_HEIGHT" value="664"/>
+			<item key="DIALOG_FONT_NAME" value="1|Segoe UI|8.830189|0|WINDOWS|1|-13|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+		</section>
+	</section>
+</section>

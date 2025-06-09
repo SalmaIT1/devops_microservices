@@ -1,0 +1,37 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: gateway-service
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: client-service
+          uri: lb://client-service
+          predicates:
+            - Path=/clients/**
+        - id: produit-service
+          uri: lb://produit-service
+          predicates:
+            - Path=/produits/**
+        - id: facture-service
+          uri: lb://facture-service
+          predicates:
+            - Path=/factures/**
+        - id: reglement-service
+          uri: lb://reglement-service
+          predicates:
+            - Path=/reglements/**
+        - id: authentification-service
+          uri: lb://authentification-service
+          predicates:
+            - Path=/auth-service/** # <--- Route all requests starting with /auth-service/ to the authentification-service
+            # This path is arbitrary, you can choose anything like /api/auth/**, /auth/**, etc.
+            # I used "auth-service" to make it explicit it goes to the auth service.
+          filters:
+            - RewritePath=/auth-service/(?<remaining>.*), /${remaining} # <--- Remove the /auth-service/ prefix before forwarding

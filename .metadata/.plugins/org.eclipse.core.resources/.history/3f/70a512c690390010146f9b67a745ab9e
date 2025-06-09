@@ -1,0 +1,5 @@
+package org.ms.factureservice.web;
+
+public class FactureLigneRestController {
+
+}

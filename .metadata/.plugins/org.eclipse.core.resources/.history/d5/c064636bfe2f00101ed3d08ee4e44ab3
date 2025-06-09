@@ -1,0 +1,14 @@
+package org.ms.authentificationservice.services;
+
+import java.util.List;
+
+import org.ms.authentification_service.entities.AppRole;
+import org.ms.authentification_service.entities.AppUser;
+
+public interface UserService {
+    AppUser addUser(AppUser appUser);
+    AppRole addRole(AppRole appRole);
+    void addRoleToUser(String username, String roleName);
+    AppUser getUserByName(String username);
+    List<AppUser> getAllUsers();
+}

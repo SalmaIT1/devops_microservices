@@ -1,0 +1,8 @@
+package entities;
+
+public class AppRole {
+
+	private Long id ;
+	private String roleNname ;
+	private String password ; 
+}

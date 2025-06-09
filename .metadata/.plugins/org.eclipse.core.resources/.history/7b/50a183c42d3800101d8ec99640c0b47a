@@ -1,0 +1,5 @@
+package org.ms.reglementservice.repository;
+
+public class ReglementRepository {
+
+}

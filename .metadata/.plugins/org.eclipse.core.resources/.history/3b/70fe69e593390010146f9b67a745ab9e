@@ -1,0 +1,38 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: gateway-service
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: client-service
+          uri: lb://client-service
+          predicates:
+            - Path=/clients/**
+        - id: produit-service
+          uri: lb://produit-service
+          predicates:
+            - Path=/produits/**
+        - id: facture-service
+          uri: lb://facture-service
+          predicates:
+            - Path=/factures/**
+        - id: reglement-service
+          uri: lb://reglement-service
+          predicates:
+            - Path=/reglements/**
+        - id: authentification-service
+          uri: lb://authentification-service
+          predicates:
+            - Path=/auth/**
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
