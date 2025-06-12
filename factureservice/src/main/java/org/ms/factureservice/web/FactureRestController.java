@@ -137,34 +137,51 @@ public class FactureRestController {
     public void deleteFacture(@PathVariable Long id) {
         factureRepository.deleteById(id);
     }
-        @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-        @GetMapping("/byClient/{clientId}")
+    
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping("/byClient/{clientId}")
     public List<Facture> getFacturesByClientId(@PathVariable Long clientId) {
         return factureRepository.findByClientID(clientId);
     }
 
-@PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-@PostMapping("/{id}/pay")
-public Facture payFacture(@PathVariable Long id, @RequestBody BigDecimal paymentAmount) {
-    Facture facture = factureRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Facture not found with id: " + id));
+    // ✅ Fixed Payment method with RequestBody and BigDecimal support
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @PostMapping("/{id}/pay")
+    public Facture payFacture(@PathVariable Long id, @RequestBody PaymentRequest paymentRequest) {
+        Facture facture = factureRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Facture not found with id: " + id));
 
-    if (paymentAmount.compareTo(BigDecimal.ZERO) <= 0) {
-        throw new RuntimeException("Payment amount must be positive.");
+        BigDecimal paymentAmount = paymentRequest.getPaymentAmount();
+        
+        if (paymentAmount == null || paymentAmount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new RuntimeException("Payment amount must be positive.");
+        }
+
+        BigDecimal newPayedAmount = facture.getPayedAmount().add(paymentAmount);
+        facture.setPayedAmount(newPayedAmount);
+
+        // Automatically update status based on totalAmount
+        if (newPayedAmount.compareTo(facture.getTotalAmount()) >= 0) {
+            facture.setStatus(Facture.Status.PAID);
+        } else {
+            facture.setStatus(Facture.Status.UNPAID);
+        }
+
+        return factureRepository.save(facture);
     }
-
-    BigDecimal newPayedAmount = facture.getPayedAmount().add(paymentAmount);
-    facture.setPayedAmount(newPayedAmount);
-
-    // Automatically update status based on totalAmount
-    if (newPayedAmount.compareTo(facture.getTotalAmount()) >= 0) {
-        facture.setStatus(Facture.Status.PAID);
-    } else {
-        facture.setStatus(Facture.Status.UNPAID);
+    
+    // ✅ PaymentRequest DTO class with BigDecimal support
+    public static class PaymentRequest {
+        private BigDecimal paymentAmount;
+        
+        public PaymentRequest() {}
+        
+        public BigDecimal getPaymentAmount() {
+            return paymentAmount;
+        }
+        
+        public void setPaymentAmount(BigDecimal paymentAmount) {
+            this.paymentAmount = paymentAmount;
+        }
     }
-
-    return factureRepository.save(facture);
-}
-
-
 }

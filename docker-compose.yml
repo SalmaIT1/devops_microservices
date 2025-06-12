@@ -1,4 +1,22 @@
+version: "3.8"
+
 services:
+  frontend:
+    build: ./projet_microservice
+    ports:
+      - "4200:4200"
+    depends_on:
+      gateway-service:
+        condition: service_started
+    environment:
+      NG_APP_API_URL: http://gateway-service:8888 # Use service name
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      # For development only (comment out for production):
+      - ./projet_microservice/src:/app/src # Mount only src for HMR
+      - /app/node_modules
   auth-service:
     build: ./authentification-service
     ports:
@@ -18,7 +36,7 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
-    command: ["java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka"]
+    command: [ "java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka" ]
     networks:
       - backend
     restart: on-failure
@@ -42,7 +60,7 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
-    command: ["java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka"]
+    command: [ "java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka" ]
     networks:
       - backend
     restart: on-failure
@@ -66,7 +84,7 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
-    command: ["java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka"]
+    command: [ "java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka" ]
     networks:
       - backend
     restart: on-failure
@@ -90,7 +108,7 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
-    command: ["java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka"]
+    command: [ "java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka" ]
     networks:
       - backend
     restart: on-failure
@@ -114,7 +132,7 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
-    command: ["java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka"]
+    command: [ "java", "-jar", "/app.jar", "--eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka" ]
     networks:
       - backend
     restart: on-failure
@@ -126,7 +144,7 @@ services:
     networks:
       - backend
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -138,7 +156,7 @@ services:
     networks:
       - backend
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5555/actuator/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:5555/actuator/health" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -183,7 +201,7 @@ services:
     networks:
       - backend
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -uroot -proot"]
+      test: [ "CMD-SHELL", "mysqladmin ping -uroot -proot" ]
       interval: 10s
       timeout: 5s
       retries: 10
